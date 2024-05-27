@@ -124,10 +124,4 @@ This script performs functional data analysis and clustering on a dataset of sub
 - `FDataGrid` and `FPCA` from `skfda` for functional data analysis.
 - `KMeans` from `sklearn.cluster` for clustering.
 
-## Usage
-1. Ensure the required libraries are installed.
-2. Modify the script to set the appropriate subjects and data column.
-3. Run the script to perform the analysis and view the results.
-
-This README provides a step-by-step guide to understand and execute the functional data analysis and clustering script. Adjust the parameters as needed for your specific dataset and analysis requirements.
 
