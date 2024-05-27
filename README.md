@@ -1,43 +1,23 @@
 # Screw Home Mechanism Analysis
 
-This Python script is designed to analyze the Screw Home mechanism in knee kinematics using quaternion data from sensors attached to the femur and tibia. The script performs several steps to process the data and visualize the angular differences between the sensors.
+This Python script is designed to analyze the Screw Home mechanism in knee kinematics using quaternion data from sensors attached to the femur and tibia, using electromagnetic trackers or Inertial measurement unit sensors. The script performs several steps to process the data and visualize the angular differences between the sensors. The workflow involves using the "kneekinematics.ipynb" notebook first to process raw data, followed by the "Data-analysis.ipynb" notebook for detailed analysis. All data required for these notebooks is located in the Data folder.
 
 ## Prerequisites
-- Python 3.x
-- Ensure you have the necessary Python libraries installed, including numpy, pandas, matplotlib, and scipy
+Python 3.x
+Jupyter Notebook
+Required Python packages: 
+- numpy
+- pandas
+- matplotlib
+- scipy
+- sklearn
 
 ## Usage
 1. Make sure you have the required libraries installed.
 2. Update the script with your specific data or file paths.
 3. Run the script.
 
-## Steps Involved
-
-### 1. Data Preparation
-- The script starts by defining necessary functions for converting quaternion data to Euler angles and calculating angular differences.
-- Quaternion data and timestamps are iterated through to calculate angular differences between the femur and tibia sensors.
-- Data is processed and stored in DataFrames for further analysis.
-
-### 2. Analysis
-- The script plots the angular differences over time and identifies rapid changes in knee movement.
-- Peaks and valleys in the angular data are detected to mark key points in the motion.
-- Data is segmented into flexion and extension phases based on the identified peaks and valleys.
-- Averaged dataframes are created for each phase to smooth out variations.
-
-### 3. Visualization
-- The script generates visualizations to display the angular differences and segmented data.
-- Plots show the angular differences over time, highlighting peaks and valleys.
-
-## Output
-- The script provides insights into the Screw Home mechanism by analyzing knee kinematics and visualizing angular differences between sensors.
-
-## Note
-- Ensure that the data format matches the expected format in the script.
-- Adjust parameters such as thresholds and distances according to your specific dataset.
-
-By following the steps outlined in this script, you can analyze and visualize the Screw Home mechanism in knee kinematics efficiently.
-
-## Steps in more detail
+## kneekinematics.ipynb
 
 1. **Quaternion to Euler Conversion Functions:**
    - `quaternion_to_euler1` and `quaternion_to_euler2` convert quaternions to Euler angles for two sensors.
@@ -82,3 +62,72 @@ By following the steps outlined in this script, you can analyze and visualize th
 
 13. **Dataframe Output:**
     - Outputs averaged dataframes for OKC extension, OKC flexion, CKC extension, and CKC flexion.
+
+## Data-analysis.ipynb
+
+# Functional Data Analysis and Clustering Script
+
+## Overview
+This script performs functional data analysis and clustering on a dataset of subjects. The process involves preparing the data, performing functional principal component analysis (FPCA), and clustering the subjects based on the principal components. The clusters are then visualized and the results are printed.
+
+## Steps
+
+## Set limit for range of flexion/extension degrees
+
+### 1. Define the List of Subjects and Data to Use
+- Specify the list of subjects and the corresponding subject names to use in the analysis.
+- The `subjects` variable can be set to `all_subjects_zero` or `subjects_zero_L`.
+- The `subjects_name` variable should match the corresponding subjects list name.
+- Define the data column to use from the dataset with `data_from_list`.
+
+### 2. Prepare Functional Data
+- Initialize empty lists `X`, `Xder`, and `subject_names` to store spline regression curves, their derivatives, and subject names, respectively.
+- Iterate over each subject's data to:
+  - Calculate the derivatives of the selected data column and append to `Xder`.
+  - Append the original data values to `X`.
+  - Append the subject names to `subject_names`.
+- Convert the lists `X` and `Xder` to NumPy arrays.
+
+### 3. Create FDataGrid Objects
+- Create `FDataGrid` objects for the data matrix `X` and its derivatives `Xder`.
+
+### 4. Apply Functional Principal Component Analysis (FPCA)
+- Define the number of principal components `n_components` to retain.
+- Perform FPCA on the `FDataGrid` objects to obtain the transformed FPCA scores for both the data and its derivatives.
+
+### 5. Perform Clustering on the FPCA Scores
+- Define the number of clusters `n_clusters`.
+- Use the KMeans clustering algorithm to fit the FPCA scores of the derivatives and predict cluster assignments.
+- Assign colors to the clusters for visualization.
+
+### 6. Print the Clusters
+- For each cluster, find the indices of subjects belonging to that cluster.
+- Print the subject names grouped by their cluster assignments.
+
+### 7. Visualize Clusters
+- Create a plot to visualize the clusters.
+- Plot the data points for each subject in their respective clusters with assigned colors.
+- Add labels, title, and legend to the plot.
+- Draw a horizontal line at y=0 for reference.
+
+### 8. Create Subject-Cluster Mapping
+- Create a dictionary mapping each subject name to their corresponding cluster number.
+- Convert this dictionary to a DataFrame for easy viewing and export.
+
+### 9. Display the DataFrame
+- Print the DataFrame showing the subject names and their cluster assignments.
+
+## Libraries and Dependencies
+- `numpy` for numerical operations.
+- `pandas` for handling data structures and data analysis.
+- `matplotlib` for plotting and visualization.
+- `FDataGrid` and `FPCA` from `skfda` for functional data analysis.
+- `KMeans` from `sklearn.cluster` for clustering.
+
+## Usage
+1. Ensure the required libraries are installed.
+2. Modify the script to set the appropriate subjects and data column.
+3. Run the script to perform the analysis and view the results.
+
+This README provides a step-by-step guide to understand and execute the functional data analysis and clustering script. Adjust the parameters as needed for your specific dataset and analysis requirements.
+
